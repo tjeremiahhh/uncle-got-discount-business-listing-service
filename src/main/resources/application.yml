@@ -3,7 +3,7 @@ app.name: Business Listing Microservice
 
 #DATASOURCE
 spring.datasource:
-  url: jdbc:mysql://business-listing-rds.c9v9opuetitb.ap-southeast-1.rds.amazonaws.com:3306/businesslistingrds
+  url: jdbc:mysql://ugd-business-listing-rds.c9v9opuetitb.ap-southeast-1.rds.amazonaws.com:3306/businesslistingrds
   username: admin
   password: nusissteam29
 
