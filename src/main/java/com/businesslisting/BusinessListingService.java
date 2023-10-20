@@ -27,7 +27,7 @@ public class BusinessListingService {
         return businessListingRepository.findById(id);
     }
 
-    public List<BusinessListingDTO> getBusinessListings() {
+    public List<BusinessListingDTO> getAllBusinessListings() {
         return businessListingRepository.findAll();
     }
 

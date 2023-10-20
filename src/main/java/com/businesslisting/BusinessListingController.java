@@ -2,6 +2,7 @@ package com.businesslisting;
 
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,9 +33,9 @@ public class BusinessListingController {
         return businessListingService.getBusinessListingById(id);
     }
 
-    @GetMapping("get-business-listings")
-    public List<BusinessListingDTO> getBusinessListings() {
-        return businessListingService.getBusinessListings();
+    @GetMapping(value = "get-all-business-listings", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<BusinessListingDTO> getAllBusinessListings() {
+        return businessListingService.getAllBusinessListings();
     }
 
     @PostMapping("update-business-listing")
