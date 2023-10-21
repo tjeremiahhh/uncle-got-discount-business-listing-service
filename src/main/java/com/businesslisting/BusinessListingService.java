@@ -1,24 +1,41 @@
 package com.businesslisting;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.businesslisting.dto.BusinessListingDTO;
+import com.businesslisting.dto.BusinessListingDescriptionDTO;
+import com.businesslisting.dto.BusinessListingDescriptionDetailsDTO;
+import com.businesslisting.dto.BusinessListingDiscountsDTO;
+import com.businesslisting.dto.BusinessListingSpecialConditionsDTO;
+import com.businesslisting.entity.Atmospheres;
 import com.businesslisting.entity.BusinessListing;
+import com.businesslisting.entity.BusinessListingDescription;
+import com.businesslisting.entity.BusinessListingDiscounts;
+import com.businesslisting.entity.BusinessListingSpecialConditions;
+import com.businesslisting.entity.Cuisines;
+import com.businesslisting.entity.Days;
+import com.businesslisting.entity.Discounts;
+import com.businesslisting.entity.PaymentOptions;
+import com.businesslisting.entity.Timings;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class BusinessListingService {
-    
+
     private final BusinessListingRepository businessListingRepository;
 
     @Transactional
-    public BusinessListingDTO createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO) {
+    public BusinessListingDTO createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
+            MultipartFile logoFile) throws IOException {
         BusinessListing businessListing = new BusinessListing(businessListingDTO);
+        businessListing.setImageFile(logoFile.getBytes());
 
         return new BusinessListingDTO(businessListingRepository.save(businessListing));
     }
@@ -34,5 +51,37 @@ public class BusinessListingService {
     @Transactional
     public void deleteBusinessListing(Integer id) {
         businessListingRepository.deleteById(id, BusinessListing.class);
+    }
+
+    public BusinessListingDescriptionDetailsDTO getBusinessListingDescriptionDetails() {
+        BusinessListingDescriptionDetailsDTO businessListingDescriptionDetailsDTO = new BusinessListingDescriptionDetailsDTO();
+
+        businessListingDescriptionDetailsDTO.setCuisines(businessListingRepository.findAll(Cuisines.class));
+        businessListingDescriptionDetailsDTO.setDays(businessListingRepository.findAll(Days.class));
+        businessListingDescriptionDetailsDTO.setDiscounts(businessListingRepository.findAll(Discounts.class));
+        businessListingDescriptionDetailsDTO.setPaymentOptions(businessListingRepository.findAll(PaymentOptions.class));
+        businessListingDescriptionDetailsDTO.setTimings(businessListingRepository.findAll(Timings.class));
+        businessListingDescriptionDetailsDTO.setAtmospheres(businessListingRepository.findAll(Atmospheres.class));
+        
+        return businessListingDescriptionDetailsDTO;
+    }
+
+    public BusinessListingDescriptionDTO createOrUpdateBusinessListingDescription(BusinessListingDescriptionDTO businessListingDescriptionDTO) {
+        BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
+
+        return new BusinessListingDescriptionDTO(businessListingRepository.save(businessListingDescription));
+    }
+
+    public BusinessListingSpecialConditionsDTO createBusinessListingSpecialConditions(BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO) {
+        BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
+
+        return new BusinessListingSpecialConditionsDTO(businessListingRepository.save(businessListingSpecialConditions));
+    }
+
+    public void createBusinessListingDiscounts(List<BusinessListingDiscountsDTO> businessListingDiscountsDTO) {
+        for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
+            BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
+            businessListingRepository.save(businessListingDiscounts);
+        }
     }
 }
