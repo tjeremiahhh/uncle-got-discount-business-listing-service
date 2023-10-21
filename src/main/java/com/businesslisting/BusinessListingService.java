@@ -32,12 +32,28 @@ public class BusinessListingService {
     private final BusinessListingRepository businessListingRepository;
 
     @Transactional
-    public BusinessListingDTO createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
+    public void createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
+            BusinessListingDescriptionDTO businessListingDescriptionDTO,
+            BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO,
+            List<BusinessListingDiscountsDTO> businessListingDiscountsDTO,
             MultipartFile logoFile) throws IOException {
+
         BusinessListing businessListing = new BusinessListing(businessListingDTO);
         businessListing.setImageFile(logoFile.getBytes());
+        businessListing = businessListingRepository.save(businessListing);
+        
+        BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
+        businessListingDescription.setBusinessListingId(businessListing.getId());
+        businessListingRepository.save(businessListingDescription);
 
-        return new BusinessListingDTO(businessListingRepository.save(businessListing));
+        BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
+        businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
+        businessListingRepository.save(businessListingSpecialConditions);
+
+        for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
+            BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
+            businessListingRepository.save(businessListingDiscounts);
+        }
     }
 
     public BusinessListingDTO getBusinessListingById(Integer id) {
@@ -62,26 +78,31 @@ public class BusinessListingService {
         businessListingDescriptionDetailsDTO.setPaymentOptions(businessListingRepository.findAll(PaymentOptions.class));
         businessListingDescriptionDetailsDTO.setTimings(businessListingRepository.findAll(Timings.class));
         businessListingDescriptionDetailsDTO.setAtmospheres(businessListingRepository.findAll(Atmospheres.class));
-        
+
         return businessListingDescriptionDetailsDTO;
     }
 
-    public BusinessListingDescriptionDTO createOrUpdateBusinessListingDescription(BusinessListingDescriptionDTO businessListingDescriptionDTO) {
-        BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
+    // public BusinessListingDescriptionDTO createOrUpdateBusinessListingDescription(
+    //         BusinessListingDescriptionDTO businessListingDescriptionDTO) {
+    //     BusinessListingDescription businessListingDescription = new BusinessListingDescription(
+    //             businessListingDescriptionDTO);
 
-        return new BusinessListingDescriptionDTO(businessListingRepository.save(businessListingDescription));
-    }
+    //     return new BusinessListingDescriptionDTO(businessListingRepository.save(businessListingDescription));
+    // }
 
-    public BusinessListingSpecialConditionsDTO createBusinessListingSpecialConditions(BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO) {
-        BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
+    // public BusinessListingSpecialConditionsDTO createBusinessListingSpecialConditions(
+    //         BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO) {
+    //     BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(
+    //             businessListingSpecialConditionsDTO);
 
-        return new BusinessListingSpecialConditionsDTO(businessListingRepository.save(businessListingSpecialConditions));
-    }
+    //     return new BusinessListingSpecialConditionsDTO(
+    //             businessListingRepository.save(businessListingSpecialConditions));
+    // }
 
-    public void createBusinessListingDiscounts(List<BusinessListingDiscountsDTO> businessListingDiscountsDTO) {
-        for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
-            BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
-            businessListingRepository.save(businessListingDiscounts);
-        }
-    }
+    // public void createBusinessListingDiscounts(List<BusinessListingDiscountsDTO> businessListingDiscountsDTO) {
+    //     for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
+    //         BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
+    //         businessListingRepository.save(businessListingDiscounts);
+    //     }
+    // }
 }
