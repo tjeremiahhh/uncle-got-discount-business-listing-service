@@ -78,8 +78,8 @@ public class BusinessListingController {
                 BusinessListingDescriptionDTO.class);
         BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
                 .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
-        BusinessListingDiscountsDTO businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
-                BusinessListingDiscountsDTO.class);
+       List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
+                new TypeReference<List<BusinessListingDiscountsDTO>>(){});
 
         businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
                 businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
