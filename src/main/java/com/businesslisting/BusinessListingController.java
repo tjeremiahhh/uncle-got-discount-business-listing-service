@@ -35,23 +35,22 @@ public class BusinessListingController {
 
     @PostMapping(value = "create-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void createBusinessListing(@RequestParam("businessListing") String businessListing,
-            @RequestParam("businessListingDescription") String businessListingDescription,
-            @RequestParam("businessListingSpecialConditions") String businessListingSpecialConditions,
-            @RequestParam("businessListingDiscounts") String businessListingDiscounts,
+            // @RequestParam("businessListingDescription") String businessListingDescription,
+            // @RequestParam("businessListingSpecialConditions") String businessListingSpecialConditions,
+            // @RequestParam("businessListingDiscounts") String businessListingDiscounts,
             @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
 
         ObjectMapper mapper = new ObjectMapper();
 
         BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
-        BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
-                BusinessListingDescriptionDTO.class);
-        BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
-                .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
-        List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
-                new TypeReference<List<BusinessListingDiscountsDTO>>(){});
+        // BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
+        //         BusinessListingDescriptionDTO.class);
+        // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
+        //         .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
+        // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
+        //         new TypeReference<List<BusinessListingDiscountsDTO>>(){});
 
-        businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
-                businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
+        businessListingService.createOrUpdateBusinessListing(businessListingDTO,  logoFile);
     }
 
     @GetMapping("get-business-listing")
@@ -64,26 +63,26 @@ public class BusinessListingController {
         return businessListingService.getAllBusinessListings();
     }
 
-    @PostMapping(value = "update-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void updateBusinessListing(@RequestParam("businessListing") String businessListing,
-            @RequestParam("businessListingDescription") String businessListingDescription,
-            @RequestParam("businessListingSpecialConditions") String businessListingSpecialConditions,
-            @RequestParam("businessListingDiscounts") String businessListingDiscounts,
-            @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
+    // @PostMapping(value = "update-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    // public void updateBusinessListing(@RequestParam("businessListing") String businessListing,
+    //         @RequestParam("businessListingDescription") String businessListingDescription,
+    //         @RequestParam("businessListingSpecialConditions") String businessListingSpecialConditions,
+    //         @RequestParam("businessListingDiscounts") String businessListingDiscounts,
+    //         @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
 
-        ObjectMapper mapper = new ObjectMapper();
+    //     ObjectMapper mapper = new ObjectMapper();
 
-        BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
-        BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
-                BusinessListingDescriptionDTO.class);
-        BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
-                .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
-       List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
-                new TypeReference<List<BusinessListingDiscountsDTO>>(){});
+    //     BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
+    //     BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
+    //             BusinessListingDescriptionDTO.class);
+    //     BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
+    //             .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
+    //    List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
+    //             new TypeReference<List<BusinessListingDiscountsDTO>>(){});
 
-        businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
-                businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
-    }
+    //     businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
+    //             businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
+    // }
 
     @DeleteMapping("delete-business-listing")
     public void deleteBusinessListing(@RequestParam Integer id) {

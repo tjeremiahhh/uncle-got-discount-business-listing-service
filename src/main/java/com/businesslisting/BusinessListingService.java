@@ -33,27 +33,27 @@ public class BusinessListingService {
 
     @Transactional
     public void createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
-            BusinessListingDescriptionDTO businessListingDescriptionDTO,
-            BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO,
-            List<BusinessListingDiscountsDTO> businessListingDiscountsDTO,
+            // BusinessListingDescriptionDTO businessListingDescriptionDTO,
+            // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO,
+            // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO,
             MultipartFile logoFile) throws IOException {
 
         BusinessListing businessListing = new BusinessListing(businessListingDTO);
         businessListing.setImageFile(logoFile.getBytes());
         businessListing = businessListingRepository.save(businessListing);
         
-        BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
-        businessListingDescription.setBusinessListingId(businessListing.getId());
-        businessListingRepository.save(businessListingDescription);
+        // BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
+        // businessListingDescription.setBusinessListingId(businessListing.getId());
+        // businessListingRepository.save(businessListingDescription);
 
-        BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
-        businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
-        businessListingRepository.save(businessListingSpecialConditions);
+        // BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
+        // businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
+        // businessListingRepository.save(businessListingSpecialConditions);
 
-        for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
-            BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
-            businessListingRepository.save(businessListingDiscounts);
-        }
+        // for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
+        //     BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
+        //     businessListingRepository.save(businessListingDiscounts);
+        // }
     }
 
     public BusinessListingDTO getBusinessListingById(Integer id) {
