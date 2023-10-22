@@ -49,11 +49,19 @@ public class BusinessListingController {
         BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
         BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
                 BusinessListingDescriptionDTO.class);
-        BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
-                .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
+        
+        BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = new BusinessListingSpecialConditionsDTO();
+        if (businessListingSpecialConditions != null) {
+            businessListingSpecialConditionsDTO = mapper
+                    .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
+            
+        } else {
+            businessListingSpecialConditionsDTO = null;
+        }
+
         List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
-                new TypeReference<List<BusinessListingDiscountsDTO>>() {
-                });
+                    new TypeReference<List<BusinessListingDiscountsDTO>>() {
+                    });
 
         businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
                 businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);

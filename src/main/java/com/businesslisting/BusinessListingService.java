@@ -43,17 +43,22 @@ public class BusinessListingService {
         BusinessListing businessListing = new BusinessListing(businessListingDTO);
         businessListing.setImageFile(logoFile.getBytes());
         businessListingRepository.save(businessListing);
-        
-        BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
+
+        BusinessListingDescription businessListingDescription = new BusinessListingDescription(
+                businessListingDescriptionDTO);
         businessListingDescription.setBusinessListingId(businessListing.getId());
         businessListingRepository.save(businessListingDescription);
 
-        BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
-        businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
-        businessListingRepository.save(businessListingSpecialConditions);
+        if (businessListingSpecialConditionsDTO != null) {
+            BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(
+                    businessListingSpecialConditionsDTO);
+            businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
+            businessListingRepository.save(businessListingSpecialConditions);
+        }
 
         for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
             BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
+            businessListingDiscounts.setBusinessListingId(businessListing.getId());
             businessListingRepository.save(businessListingDiscounts);
         }
     }
@@ -61,10 +66,12 @@ public class BusinessListingService {
     public BusinessListingRequestDTO getBusinessListingById(Integer id) {
         BusinessListingRequestDTO businessListingRequest = new BusinessListingRequestDTO();
         businessListingRequest.setBusinessListing(businessListingRepository.findById(id));
-        businessListingRequest.setBusinessListingDescription(businessListingRepository.getBusinessListingDescription(id));
-        businessListingRequest.setBusinessListingSpecialConditions(businessListingRepository.getBusinessListingSpecialConditions(id));
+        businessListingRequest
+                .setBusinessListingDescription(businessListingRepository.getBusinessListingDescription(id));
+        businessListingRequest
+                .setBusinessListingSpecialConditions(businessListingRepository.getBusinessListingSpecialConditions(id));
         businessListingRequest.setBusinessListingDiscounts(businessListingRepository.getBusinessListingDiscounts(id));
-        
+
         return businessListingRequest;
     }
 
@@ -90,28 +97,35 @@ public class BusinessListingService {
         return businessListingDescriptionDetailsDTO;
     }
 
-    // public BusinessListingDescriptionDTO createOrUpdateBusinessListingDescription(
-    //         BusinessListingDescriptionDTO businessListingDescriptionDTO) {
-    //     BusinessListingDescription businessListingDescription = new BusinessListingDescription(
-    //             businessListingDescriptionDTO);
+    // public BusinessListingDescriptionDTO
+    // createOrUpdateBusinessListingDescription(
+    // BusinessListingDescriptionDTO businessListingDescriptionDTO) {
+    // BusinessListingDescription businessListingDescription = new
+    // BusinessListingDescription(
+    // businessListingDescriptionDTO);
 
-    //     return new BusinessListingDescriptionDTO(businessListingRepository.save(businessListingDescription));
+    // return new
+    // BusinessListingDescriptionDTO(businessListingRepository.save(businessListingDescription));
     // }
 
-    // public BusinessListingSpecialConditionsDTO createBusinessListingSpecialConditions(
-    //         BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO) {
-    //     BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(
-    //             businessListingSpecialConditionsDTO);
+    // public BusinessListingSpecialConditionsDTO
+    // createBusinessListingSpecialConditions(
+    // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO) {
+    // BusinessListingSpecialConditions businessListingSpecialConditions = new
+    // BusinessListingSpecialConditions(
+    // businessListingSpecialConditionsDTO);
 
-    //     return new BusinessListingSpecialConditionsDTO(
-    //             businessListingRepository.save(businessListingSpecialConditions));
+    // return new BusinessListingSpecialConditionsDTO(
+    // businessListingRepository.save(businessListingSpecialConditions));
     // }
 
-    // public void createBusinessListingDiscounts(List<BusinessListingDiscountsDTO> businessListingDiscountsDTO) {
-    //     for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
-    //         BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
-    //         businessListingRepository.save(businessListingDiscounts);
-    //     }
+    // public void createBusinessListingDiscounts(List<BusinessListingDiscountsDTO>
+    // businessListingDiscountsDTO) {
+    // for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
+    // BusinessListingDiscounts businessListingDiscounts = new
+    // BusinessListingDiscounts(discount);
+    // businessListingRepository.save(businessListingDiscounts);
+    // }
     // }
 
     public Integer getBusinessListingIdByUserid(Integer userId) {
