@@ -18,9 +18,9 @@ public class BusinessListingDTO {
     private String address;
     private byte[] imageFile;
     private String websiteUrl;
-    private boolean allowPublicHoliday;
+    private Boolean allowPublicHoliday;
     private String menuUrl;
-    private boolean halalCertified;
+    private Boolean halalCertified;
 
     public BusinessListingDTO(BusinessListing businessListing) {
         this.id = businessListing.getId();
@@ -31,8 +31,8 @@ public class BusinessListingDTO {
         this.address = businessListing.getAddress();
         this.imageFile = businessListing.getImageFile();
         this.websiteUrl = businessListing.getWebsiteUrl();
-        this.allowPublicHoliday = businessListing.isAllowPublicHoliday();
+        this.allowPublicHoliday = businessListing.getAllowPublicHoliday();
         this.menuUrl = businessListing.getMenuUrl();
-        this.halalCertified = businessListing.isHalalCertified();
+        this.halalCertified = businessListing.getHalalCertified();
     }
 }

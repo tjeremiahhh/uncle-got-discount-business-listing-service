@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.businesslisting.dto.BusinessListingAndDiscountDTO;
 import com.businesslisting.dto.BusinessListingDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDetailsDTO;
@@ -146,5 +147,10 @@ public class BusinessListingController {
     @GetMapping(value = "get-business-listing-id-by-userid", produces = MediaType.APPLICATION_JSON_VALUE)
     public Integer getBusinessListingIdByUserid(Integer userId) {
         return businessListingService.getBusinessListingIdByUserid(userId);
+    }
+
+    @GetMapping(value = "get-business-listing-and-discount", produces = MediaType.APPLICATION_JSON_VALUE)
+    public BusinessListingAndDiscountDTO getBusinessListingAndDiscount(Integer discountId) {
+        return businessListingService.getBusinessListingAndDiscount(discountId);
     }
 }

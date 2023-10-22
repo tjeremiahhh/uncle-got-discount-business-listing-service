@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.businesslisting.dto.BusinessListingAndDiscountDTO;
 import com.businesslisting.dto.BusinessListingDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDetailsDTO;
@@ -124,5 +125,17 @@ public class BusinessListingService {
 
     public Integer getBusinessListingIdByUserid(Integer userId) {
         return businessListingRepository.getBusinessListingIdByUserid(userId);
+    }
+
+    public BusinessListingAndDiscountDTO getBusinessListingAndDiscount(Integer discountId) {
+        BusinessListingAndDiscountDTO businessListingAndDiscount = new BusinessListingAndDiscountDTO();
+
+        BusinessListingDiscountsDTO businessListingDiscountsDTO = new BusinessListingDiscountsDTO(businessListingRepository.findById(discountId, BusinessListingDiscounts.class));
+        BusinessListingDTO businessListingDTO = businessListingRepository.getBusinessListing(businessListingDiscountsDTO.getBusinessListingId());
+
+        businessListingAndDiscount.setBusinessListing(businessListingDTO);
+        businessListingAndDiscount.setBusinessListingDiscounts(businessListingDiscountsDTO);
+
+        return businessListingAndDiscount;
     }
 }
