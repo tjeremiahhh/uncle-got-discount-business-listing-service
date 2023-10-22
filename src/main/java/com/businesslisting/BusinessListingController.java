@@ -23,10 +23,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/api/business-listing/")
 @RequiredArgsConstructor
+@Slf4j
 @CrossOrigin(origins = { "http://localhost:4200",
         "http://ugd-frontend-app-lb-1592138430.ap-southeast-1.elb.amazonaws.com" })
 public class BusinessListingController {
@@ -39,6 +41,10 @@ public class BusinessListingController {
             // @RequestParam("businessListingSpecialConditions") String businessListingSpecialConditions,
             // @RequestParam("businessListingDiscounts") String businessListingDiscounts,
             @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
+        
+        log.info("file123 " + logoFile);
+        log.info("business123 " + businessListing);
+
 
         ObjectMapper mapper = new ObjectMapper();
 
