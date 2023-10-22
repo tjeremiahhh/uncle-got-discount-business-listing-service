@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,8 +37,8 @@ public class BusinessListingController {
     private final BusinessListingService businessListingService;
 
     @PostMapping(value = "create-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BusinessListingDTO createBusinessListing(@RequestParam("businessListing") String businessListing,
-            @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
+    public BusinessListingDTO createBusinessListing(@RequestPart("businessListing") String businessListing,
+            @RequestPart(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
         
         System.out.println("file123 " + logoFile);
         System.out.println("business123 " + businessListing);
@@ -114,4 +115,9 @@ public class BusinessListingController {
     //         @RequestBody List<BusinessListingDiscountsDTO> businessListingDiscountsDTO) {
     //     businessListingService.createBusinessListingDiscounts(businessListingDiscountsDTO);
     // }
+
+    @GetMapping(value = "get-business-listing-id-by-userid", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Integer getBusinessListingIdByUserid(Integer userId) {
+        return businessListingService.getBusinessListingIdByUserid(userId);
+    }
 }

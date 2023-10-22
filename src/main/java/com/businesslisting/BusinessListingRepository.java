@@ -31,4 +31,19 @@ public class BusinessListingRepository extends SimpleJdbcRepositoryImpl {
 
         return queryList(sqlQuery, BusinessListingDTO.class);
     }
+
+    public Integer getBusinessListingIdByUserid(Integer userId) {
+        StringBuilder sqlQuery = new StringBuilder(
+            "SELECT "
+            +"    id "
+            +"FROM "
+            +"    business_listings "
+            +"WHERE "
+            +"    user_id = :userId "
+        );
+
+        MapSqlParameterSource sqlParameters = new MapSqlParameterSource("userId", userId);
+
+        return querySingleObject(sqlQuery.toString(), sqlParameters, Integer.class);
+    }
 }
