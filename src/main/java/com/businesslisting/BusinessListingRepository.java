@@ -7,6 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import com.businesslisting.common.repository.SimpleJdbcRepositoryImpl;
 import com.businesslisting.dto.BusinessListingDTO;
+import com.businesslisting.dto.BusinessListingDescriptionDTO;
+import com.businesslisting.dto.BusinessListingDiscountsDTO;
+import com.businesslisting.dto.BusinessListingSpecialConditionsDTO;
 
 @Repository
 public class BusinessListingRepository extends SimpleJdbcRepositoryImpl {
@@ -45,5 +48,50 @@ public class BusinessListingRepository extends SimpleJdbcRepositoryImpl {
         MapSqlParameterSource sqlParameters = new MapSqlParameterSource("userId", userId);
 
         return querySingleObject(sqlQuery.toString(), sqlParameters, Integer.class);
+    }
+    
+    public BusinessListingDescriptionDTO getBusinessListingDescription(Integer id) {
+        StringBuilder sqlQuery = new StringBuilder(
+            "SELECT "
+            +"    * "
+            +"FROM "
+            +"    business_listing_description "
+            +"WHERE "
+            +"    business_listing_id = :id "
+        );
+
+        MapSqlParameterSource sqlParameters = new MapSqlParameterSource("id", id);
+
+        return querySingleObject(sqlQuery.toString(), sqlParameters, BusinessListingDescriptionDTO.class);
+    }
+
+    public BusinessListingSpecialConditionsDTO getBusinessListingSpecialConditions(Integer id) {
+        StringBuilder sqlQuery = new StringBuilder(
+            "SELECT "
+            +"    * "
+            +"FROM "
+            +"    business_listing_special_conditions "
+            +"WHERE "
+            +"    business_listing_id = :id "
+        );
+
+        MapSqlParameterSource sqlParameters = new MapSqlParameterSource("id", id);
+
+        return querySingleObject(sqlQuery.toString(), sqlParameters, BusinessListingSpecialConditionsDTO.class);
+    }
+
+    public List<BusinessListingDiscountsDTO> getBusinessListingDiscounts(Integer id) {
+        StringBuilder sqlQuery = new StringBuilder(
+            "SELECT "
+            +"    * "
+            +"FROM "
+            +"    business_listing_discounts "
+            +"WHERE "
+            +"    business_listing_id = :id "
+        );
+
+        MapSqlParameterSource sqlParameters = new MapSqlParameterSource("id", id);
+
+        return queryList(sqlQuery.toString(), sqlParameters, BusinessListingDiscountsDTO.class);
     }
 }

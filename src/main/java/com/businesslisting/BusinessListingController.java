@@ -19,6 +19,7 @@ import com.businesslisting.dto.BusinessListingDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDetailsDTO;
 import com.businesslisting.dto.BusinessListingDiscountsDTO;
+import com.businesslisting.dto.BusinessListingRequestDTO;
 import com.businesslisting.dto.BusinessListingSpecialConditionsDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,28 +38,29 @@ public class BusinessListingController {
     private final BusinessListingService businessListingService;
 
     @PostMapping(value = "create-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public BusinessListingDTO createBusinessListing(@RequestPart("businessListing") String businessListing,
+    public void createBusinessListing(@RequestPart("businessListing") String businessListing,
+            @RequestPart("businessListingDescription") String businessListingDescription,
+            @RequestPart("businessListingSpecialConditions") String businessListingSpecialConditions,
+            @RequestPart("businessListingDiscounts") String businessListingDiscounts,
             @RequestPart(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
-        
-        System.out.println("file123 " + logoFile);
-        System.out.println("business123 " + businessListing);
-
 
         ObjectMapper mapper = new ObjectMapper();
 
         BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
-        // BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
-        //         BusinessListingDescriptionDTO.class);
-        // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
-        //         .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
-        // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
-        //         new TypeReference<List<BusinessListingDiscountsDTO>>(){});
+        BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
+                BusinessListingDescriptionDTO.class);
+        BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
+                .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
+        List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
+                new TypeReference<List<BusinessListingDiscountsDTO>>() {
+                });
 
-        return businessListingService.createOrUpdateBusinessListing(businessListingDTO,  logoFile);
+        businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
+                businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
     }
 
     @GetMapping("get-business-listing")
-    public BusinessListingDTO getBusinessListing(@RequestParam Integer id) {
+    public BusinessListingRequestDTO getBusinessListing(@RequestParam Integer id) {
         return businessListingService.getBusinessListingById(id);
     }
 
@@ -67,25 +69,37 @@ public class BusinessListingController {
         return businessListingService.getAllBusinessListings();
     }
 
-    // @PostMapping(value = "update-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    // public void updateBusinessListing(@RequestParam("businessListing") String businessListing,
-    //         @RequestParam("businessListingDescription") String businessListingDescription,
-    //         @RequestParam("businessListingSpecialConditions") String businessListingSpecialConditions,
-    //         @RequestParam("businessListingDiscounts") String businessListingDiscounts,
-    //         @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
+    // @PostMapping(value = "update-business-listing", consumes =
+    // MediaType.MULTIPART_FORM_DATA_VALUE, produces =
+    // MediaType.APPLICATION_JSON_VALUE)
+    // public void updateBusinessListing(@RequestParam("businessListing") String
+    // businessListing,
+    // @RequestParam("businessListingDescription") String
+    // businessListingDescription,
+    // @RequestParam("businessListingSpecialConditions") String
+    // businessListingSpecialConditions,
+    // @RequestParam("businessListingDiscounts") String businessListingDiscounts,
+    // @RequestParam(value = "logoFile", required = false) MultipartFile logoFile)
+    // throws IOException {
 
-    //     ObjectMapper mapper = new ObjectMapper();
+    // ObjectMapper mapper = new ObjectMapper();
 
-    //     BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
-    //     BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
-    //             BusinessListingDescriptionDTO.class);
-    //     BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = mapper
-    //             .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
-    //    List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
-    //             new TypeReference<List<BusinessListingDiscountsDTO>>(){});
+    // BusinessListingDTO businessListingDTO = mapper.readValue(businessListing,
+    // BusinessListingDTO.class);
+    // BusinessListingDescriptionDTO businessListingDescriptionDTO =
+    // mapper.readValue(businessListingDescription,
+    // BusinessListingDescriptionDTO.class);
+    // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO =
+    // mapper
+    // .readValue(businessListingSpecialConditions,
+    // BusinessListingSpecialConditionsDTO.class);
+    // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO =
+    // mapper.readValue(businessListingDiscounts,
+    // new TypeReference<List<BusinessListingDiscountsDTO>>(){});
 
-    //     businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
-    //             businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
+    // businessListingService.createOrUpdateBusinessListing(businessListingDTO,
+    // businessListingDescriptionDTO,
+    // businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
     // }
 
     @DeleteMapping("delete-business-listing")
@@ -98,22 +112,32 @@ public class BusinessListingController {
         return businessListingService.getBusinessListingDescriptionDetails();
     }
 
-    // @PostMapping(value = "create-business-listing-description", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    // @PostMapping(value = "create-business-listing-description", consumes =
+    // MediaType.APPLICATION_JSON_VALUE, produces =
+    // MediaType.APPLICATION_JSON_VALUE)
     // public BusinessListingDescriptionDTO createBusinessListingDescription(
-    //         @RequestBody BusinessListingDescriptionDTO businessListingDescriptionDTO) {
-    //     return businessListingService.createOrUpdateBusinessListingDescription(businessListingDescriptionDTO);
+    // @RequestBody BusinessListingDescriptionDTO businessListingDescriptionDTO) {
+    // return
+    // businessListingService.createOrUpdateBusinessListingDescription(businessListingDescriptionDTO);
     // }
 
-    // @PostMapping(value = "create-business-listing-special-conditions", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    // public BusinessListingSpecialConditionsDTO createBusinessListingSpecialConditions(
-    //         @RequestBody BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO) {
-    //     return businessListingService.createBusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
+    // @PostMapping(value = "create-business-listing-special-conditions", consumes =
+    // MediaType.APPLICATION_JSON_VALUE, produces =
+    // MediaType.APPLICATION_JSON_VALUE)
+    // public BusinessListingSpecialConditionsDTO
+    // createBusinessListingSpecialConditions(
+    // @RequestBody BusinessListingSpecialConditionsDTO
+    // businessListingSpecialConditionsDTO) {
+    // return
+    // businessListingService.createBusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
     // }
 
-    // @PostMapping(value = "create-business-listing-discounts", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    // @PostMapping(value = "create-business-listing-discounts", consumes =
+    // MediaType.APPLICATION_JSON_VALUE, produces =
+    // MediaType.APPLICATION_JSON_VALUE)
     // public void createBusinessListingDiscounts(
-    //         @RequestBody List<BusinessListingDiscountsDTO> businessListingDiscountsDTO) {
-    //     businessListingService.createBusinessListingDiscounts(businessListingDiscountsDTO);
+    // @RequestBody List<BusinessListingDiscountsDTO> businessListingDiscountsDTO) {
+    // businessListingService.createBusinessListingDiscounts(businessListingDiscountsDTO);
     // }
 
     @GetMapping(value = "get-business-listing-id-by-userid", produces = MediaType.APPLICATION_JSON_VALUE)

@@ -12,6 +12,7 @@ import com.businesslisting.dto.BusinessListingDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDTO;
 import com.businesslisting.dto.BusinessListingDescriptionDetailsDTO;
 import com.businesslisting.dto.BusinessListingDiscountsDTO;
+import com.businesslisting.dto.BusinessListingRequestDTO;
 import com.businesslisting.dto.BusinessListingSpecialConditionsDTO;
 import com.businesslisting.entity.Atmospheres;
 import com.businesslisting.entity.BusinessListing;
@@ -33,32 +34,38 @@ public class BusinessListingService {
     private final BusinessListingRepository businessListingRepository;
 
     @Transactional
-    public BusinessListingDTO createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
-            // BusinessListingDescriptionDTO businessListingDescriptionDTO,
-            // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO,
-            // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO,
+    public void createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
+            BusinessListingDescriptionDTO businessListingDescriptionDTO,
+            BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO,
+            List<BusinessListingDiscountsDTO> businessListingDiscountsDTO,
             MultipartFile logoFile) throws IOException {
 
         BusinessListing businessListing = new BusinessListing(businessListingDTO);
         businessListing.setImageFile(logoFile.getBytes());
-        return new BusinessListingDTO(businessListingRepository.save(businessListing));
+        businessListingRepository.save(businessListing);
         
-        // BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
-        // businessListingDescription.setBusinessListingId(businessListing.getId());
-        // businessListingRepository.save(businessListingDescription);
+        BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
+        businessListingDescription.setBusinessListingId(businessListing.getId());
+        businessListingRepository.save(businessListingDescription);
 
-        // BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
-        // businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
-        // businessListingRepository.save(businessListingSpecialConditions);
+        BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingSpecialConditionsDTO);
+        businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
+        businessListingRepository.save(businessListingSpecialConditions);
 
-        // for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
-        //     BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
-        //     businessListingRepository.save(businessListingDiscounts);
-        // }
+        for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
+            BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
+            businessListingRepository.save(businessListingDiscounts);
+        }
     }
 
-    public BusinessListingDTO getBusinessListingById(Integer id) {
-        return businessListingRepository.findById(id);
+    public BusinessListingRequestDTO getBusinessListingById(Integer id) {
+        BusinessListingRequestDTO businessListingRequest = new BusinessListingRequestDTO();
+        businessListingRequest.setBusinessListing(businessListingRepository.findById(id));
+        businessListingRequest.setBusinessListingDescription(businessListingRepository.getBusinessListingDescription(id));
+        businessListingRequest.setBusinessListingSpecialConditions(businessListingRepository.getBusinessListingSpecialConditions(id));
+        businessListingRequest.setBusinessListingDiscounts(businessListingRepository.getBusinessListingDiscounts(id));
+        
+        return businessListingRequest;
     }
 
     public List<BusinessListingDTO> getAllBusinessListings() {
