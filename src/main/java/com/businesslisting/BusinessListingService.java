@@ -32,7 +32,7 @@ public class BusinessListingService {
     private final BusinessListingRepository businessListingRepository;
 
     @Transactional
-    public void createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
+    public BusinessListingDTO createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
             // BusinessListingDescriptionDTO businessListingDescriptionDTO,
             // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO,
             // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO,
@@ -40,7 +40,7 @@ public class BusinessListingService {
 
         BusinessListing businessListing = new BusinessListing(businessListingDTO);
         businessListing.setImageFile(logoFile.getBytes());
-        businessListing = businessListingRepository.save(businessListing);
+        return new BusinessListingDTO(businessListingRepository.save(businessListing));
         
         // BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingDescriptionDTO);
         // businessListingDescription.setBusinessListingId(businessListing.getId());

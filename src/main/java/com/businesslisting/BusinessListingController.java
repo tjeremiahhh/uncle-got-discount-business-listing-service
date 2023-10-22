@@ -36,14 +36,11 @@ public class BusinessListingController {
     private final BusinessListingService businessListingService;
 
     @PostMapping(value = "create-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createBusinessListing(@RequestParam("businessListing") String businessListing,
-            // @RequestParam("businessListingDescription") String businessListingDescription,
-            // @RequestParam("businessListingSpecialConditions") String businessListingSpecialConditions,
-            // @RequestParam("businessListingDiscounts") String businessListingDiscounts,
+    public BusinessListingDTO createBusinessListing(@RequestParam("businessListing") String businessListing,
             @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
         
-        log.info("file123 " + logoFile);
-        log.info("business123 " + businessListing);
+        System.out.println("file123 " + logoFile);
+        System.out.println("business123 " + businessListing);
 
 
         ObjectMapper mapper = new ObjectMapper();
@@ -56,7 +53,7 @@ public class BusinessListingController {
         // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
         //         new TypeReference<List<BusinessListingDiscountsDTO>>(){});
 
-        businessListingService.createOrUpdateBusinessListing(businessListingDTO,  logoFile);
+        return businessListingService.createOrUpdateBusinessListing(businessListingDTO,  logoFile);
     }
 
     @GetMapping("get-business-listing")
