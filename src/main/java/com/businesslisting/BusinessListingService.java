@@ -34,29 +34,23 @@ public class BusinessListingService {
     private final BusinessListingRepository businessListingRepository;
 
     @Transactional
-    public void createOrUpdateBusinessListing(BusinessListingDTO businessListingDTO,
-            BusinessListingDescriptionDTO businessListingDescriptionDTO,
-            BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO,
-            List<BusinessListingDiscountsDTO> businessListingDiscountsDTO,
-            MultipartFile logoFile) throws IOException {
+    public void createOrUpdateBusinessListing(BusinessListingRequestDTO businessListingRequestDTO) throws IOException {
 
-        BusinessListing businessListing = new BusinessListing(businessListingDTO);
-        businessListing.setImageFile(logoFile.getBytes());
+        BusinessListing businessListing = new BusinessListing(businessListingRequestDTO.getBusinessListing());
+        // businessListing.setImageFile(logoFile.getBytes());
         businessListingRepository.save(businessListing);
 
-        BusinessListingDescription businessListingDescription = new BusinessListingDescription(
-                businessListingDescriptionDTO);
+        BusinessListingDescription businessListingDescription = new BusinessListingDescription(businessListingRequestDTO.getBusinessListingDescription());
         businessListingDescription.setBusinessListingId(businessListing.getId());
         businessListingRepository.save(businessListingDescription);
 
-        if (businessListingSpecialConditionsDTO != null) {
-            BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(
-                    businessListingSpecialConditionsDTO);
+        if (businessListingRequestDTO.getBusinessListingSpecialConditions() != null) {
+            BusinessListingSpecialConditions businessListingSpecialConditions = new BusinessListingSpecialConditions(businessListingRequestDTO.getBusinessListingSpecialConditions());
             businessListingSpecialConditions.setBusinessListingId(businessListing.getId());
             businessListingRepository.save(businessListingSpecialConditions);
         }
 
-        for (BusinessListingDiscountsDTO discount : businessListingDiscountsDTO) {
+        for (BusinessListingDiscountsDTO discount : businessListingRequestDTO.getBusinessListingDiscounts()) {
             BusinessListingDiscounts businessListingDiscounts = new BusinessListingDiscounts(discount);
             businessListingDiscounts.setBusinessListingId(businessListing.getId());
             businessListingRepository.save(businessListingDiscounts);

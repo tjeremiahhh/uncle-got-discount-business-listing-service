@@ -37,34 +37,29 @@ public class BusinessListingController {
 
     private final BusinessListingService businessListingService;
 
-    @PostMapping(value = "create-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public void createBusinessListing(@RequestPart("businessListing") String businessListing,
-            @RequestPart("businessListingDescription") String businessListingDescription,
-            @RequestPart(value = "businessListingSpecialConditions", required = false) String businessListingSpecialConditions,
-            @RequestPart("businessListingDiscounts") String businessListingDiscounts,
-            @RequestPart(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
+    @PostMapping(value = "create-business-listing", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createBusinessListing(@RequestBody BusinessListingRequestDTO businessListingRequestDTO) throws IOException {
 
-        ObjectMapper mapper = new ObjectMapper();
+        // ObjectMapper mapper = new ObjectMapper();
 
-        BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
-        BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
-                BusinessListingDescriptionDTO.class);
+        // BusinessListingDTO businessListingDTO = mapper.readValue(businessListing, BusinessListingDTO.class);
+        // BusinessListingDescriptionDTO businessListingDescriptionDTO = mapper.readValue(businessListingDescription,
+        //         BusinessListingDescriptionDTO.class);
         
-        BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = new BusinessListingSpecialConditionsDTO();
-        if (businessListingSpecialConditions != null) {
-            businessListingSpecialConditionsDTO = mapper
-                    .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
+        // BusinessListingSpecialConditionsDTO businessListingSpecialConditionsDTO = new BusinessListingSpecialConditionsDTO();
+        // if (businessListingSpecialConditions != null) {
+        //     businessListingSpecialConditionsDTO = mapper
+        //             .readValue(businessListingSpecialConditions, BusinessListingSpecialConditionsDTO.class);
             
-        } else {
-            businessListingSpecialConditionsDTO = null;
-        }
+        // } else {
+        //     businessListingSpecialConditionsDTO = null;
+        // }
 
-        List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
-                    new TypeReference<List<BusinessListingDiscountsDTO>>() {
-                    });
+        // List<BusinessListingDiscountsDTO> businessListingDiscountsDTO = mapper.readValue(businessListingDiscounts,
+        //             new TypeReference<List<BusinessListingDiscountsDTO>>() {
+        //             });
 
-        businessListingService.createOrUpdateBusinessListing(businessListingDTO, businessListingDescriptionDTO,
-                businessListingSpecialConditionsDTO, businessListingDiscountsDTO, logoFile);
+        businessListingService.createOrUpdateBusinessListing(businessListingRequestDTO);
     }
 
     @GetMapping("get-business-listing")
