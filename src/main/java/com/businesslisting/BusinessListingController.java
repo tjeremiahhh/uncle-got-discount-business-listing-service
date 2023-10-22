@@ -40,7 +40,7 @@ public class BusinessListingController {
     @PostMapping(value = "create-business-listing", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void createBusinessListing(@RequestPart("businessListing") String businessListing,
             @RequestPart("businessListingDescription") String businessListingDescription,
-            @RequestPart("businessListingSpecialConditions") String businessListingSpecialConditions,
+            @RequestPart(value = "businessListingSpecialConditions", required = false) String businessListingSpecialConditions,
             @RequestPart("businessListingDiscounts") String businessListingDiscounts,
             @RequestPart(value = "logoFile", required = false) MultipartFile logoFile) throws IOException {
 
