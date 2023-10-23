@@ -42,7 +42,7 @@ public class BusinessListingRepository extends SimpleJdbcRepositoryImpl {
             +"FROM "
             +"    business_listings "
             +"WHERE "
-            +"    user_id = :userId "
+            +"    user_id = :userId limit 1 "
         );
 
         MapSqlParameterSource sqlParameters = new MapSqlParameterSource("userId", userId);
